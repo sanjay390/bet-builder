@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-const Info = (props) => {
+const Info = () => {
   const { state } = useLocation();
-  console.log("props", state);
   const { pageId } = state;
 
   const [sportData, setSportData] = useState();
@@ -38,8 +37,6 @@ const Info = (props) => {
     });
   }, []);
 
-  //   console.log("sportData", sportData);
-
   const detailData = sportData && sportData.map((data) => data.MatchId);
 
   return (
@@ -59,12 +56,12 @@ const Info = (props) => {
               </div>
 
               <div className="row">
-                <div className="bg-danger mt-4 text-white p-3 col-6">
+                <div className="bg-danger mt-4 text-white p-3 col-6 info-font">
                   {res.MatchDate}
                 </div>
                 <div className="bg-dark mt-4 text-white p-3 col-6">
-                  {res.MatchName}
-                  <br />
+                  <p className="info-font">{res.MatchName}</p>
+                  
                   {res.LeagueName}
                 </div>
               </div>

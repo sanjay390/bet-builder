@@ -83,3 +83,12 @@ tr:nth-child(even){
     cursor: pointer;
 
 }
+.time{
+  margin-right: 30px;
+}
+.list{
+  cursor:pointer;
+}
+.info-font{
+  font-weight: 800;
+}
