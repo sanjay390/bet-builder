@@ -9,6 +9,9 @@ const Info = () => {
   const [sportData, setSportData] = useState();
   const [legData, setLegData] = useState();
   const [selectionData, setSelectionData] = useState();
+  const [selectionValue, setSelectionValue] = useState(1);
+  const [leg, setLeg] = useState(1);
+  const [detailData, setDetailData] = useState();
 
   useEffect(() => {
     const baseUrl =
@@ -37,7 +40,23 @@ const Info = () => {
     });
   }, []);
 
-  const detailData = sportData && sportData.map((data) => data.MatchId);
+  useEffect(() => {
+    const baseUrl = `http://cms.bettorlogic.com/api/BetBuilder/GetBetBuilderBets?sports=1&matchId=${pageId}&marketId=${selectionValue}&legs=${leg}&language=en`;
+    axios.get(`${baseUrl}`).then((response) => {
+      setDetailData(response.data);
+    });
+  }, [selectionValue, leg]);
+
+
+
+  const handleMarket = (e) => {
+    setSelectionValue(e.target.value);
+  };
+
+  const handleLeg = (e) => {
+    setLeg(e.target.value);
+  };
+const odds =  detailData && detailData.TotalOdds
 
   return (
     <div className="">
@@ -61,7 +80,7 @@ const Info = () => {
                 </div>
                 <div className="bg-dark mt-4 text-white p-3 col-6">
                   <p className="info-font">{res.MatchName}</p>
-                  
+
                   {res.LeagueName}
                 </div>
               </div>
@@ -72,47 +91,61 @@ const Info = () => {
         })}
       <div className="row">
         <div className="col-6 mt-5">
-          <label className="pl-4 leg text-success">Selection </label>
-          <select>
+          <label className="pl-4 leg text-dark">Selection </label>
+          <select onChange={handleMarket} value={selectionValue}>
             {selectionData &&
-              selectionData.map((data) => {
-                return <option>{data.MarketName}</option>;
+              selectionData.map((data, index) => {
+                return (
+                  <option key={index} value={data.MarketId}>
+                    {data.MarketName}
+                  </option>
+                );
               })}
           </select>
         </div>
+
         <div className="col-6 mt-5 ">
-          <label className="pl-4 leg text-success">LEG: </label>
-          <select>
+          <label className="pl-4 leg text-dark">LEGS: </label>
+          <select onChange={handleLeg} value={leg}>
             {legData &&
-              legData.map((data) => {
-                return <option>{data.selectionId}</option>;
+              legData.map((data, index) => {
+                return <option  key={data.selectionId} value={data.selectionId}>{data.selectionId}</option>;
               })}
           </select>
         </div>
       </div>
-      <div className="row m-4">
-    
+      <div className="col-6 mt-5">
+          <p className="pl-4 leg text-dark">Odds:<span className="text-danger m-4">{odds}</span>  </p>
+          <p></p>
+        </div>
 
+      <div className="row m-4">
         <table className="mt-5 ml-3">
           <thead>
-            <tr className="">
+            <tr>
+              <th className="text-danger"> Key Stats</th>
               <th className="text-danger"> Market</th>
               <th className="text-danger">Outcome</th>
             </tr>
           </thead>
           <tbody>
-            {selectionData &&
-              selectionData.map((data) => {
+            {detailData &&
+              detailData.BetBuilderSelections.map((data, index) => {
                 return (
-                  <tr key={data.MatchId}>
-                    <td>{data.MasterMarketName}</td>
-                    <td>{data.MarketName}</td>
+                  
+                  <tr key={data.MarketId}>
+                    <td>{data.RTB}</td>
+                    <td>{data.Market}</td>
+                    <td>{data.Selection}</td>
+                    
                   </tr>
                 );
               })}
           </tbody>
         </table>
       </div>
+
+    
     </div>
   );
 };

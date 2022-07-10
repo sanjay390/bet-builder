@@ -21,6 +21,7 @@ const DateShow = (props) => {
   const handleDate = (MatchId) => {
     setDateValue(MatchId);
   };
+  
 
   const info = (id) => {
     navigate(`/info/${id}`, { state: { pageId: id } });
@@ -43,6 +44,9 @@ const DateShow = (props) => {
       <div className="">
         <div className="row bg-dark mb-3 text-white">
           <h1>Bet Builder Fixture</h1>
+        </div>
+        <div className="row  mb-3 mt-5 text-white header">
+          <h3>Select a Date For Your Bet</h3>
         </div>
         <div className="row d-flex justify-content-center">
           {uniqueDates.splice(0, 5).map((data) => {

@@ -92,3 +92,6 @@ tr:nth-child(even){
 .info-font{
   font-weight: 800;
 }
+.header{
+  background-color: #dc3444;
+}
